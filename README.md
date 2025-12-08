@@ -73,20 +73,7 @@ Matplotlib, Seaborn
 
 SciPy / Statsmodels (for inferential statistics)
 
-Jupyter Notebook
 
-📁 Repository Structure
-├── data/
-│   └── student_data.csv
-├── notebooks/
-│   ├── EDA.ipynb
-│   ├── Inferential_Analysis.ipynb
-├── visuals/
-│   └── plots and graphs
-├── src/
-│   └── preprocessing.py
-│   └── analysis_tools.py
-└── README.md
 
 📌 Conclusion
 
