@@ -9,7 +9,7 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-df=pd.read_csv(r"E:\LOVELY PROFFESTIONAL UNIVERSITY\SEM 5\INT234 PREDICTIVE ANALYTICS\Project\real_drug_dataset.csv")
+df=pd.read_csv("https://github.com/MYasasri/Predictive-Insights/blob/main/real_drug_dataset.csv")
 pd.set_option('future.no_silent_downcasting', True)
 
 '''EDA'''
@@ -116,4 +116,5 @@ model_accuracy = {
 best_model = max(model_accuracy, key=model_accuracy.get)
 
 print("Best Fit Model:", best_model," with Accuracy:", model_accuracy[best_model])
+
 
