@@ -10,7 +10,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 df=pd.read_csv("real_drug_dataset.csv")
-pd.set_option('future.no_silent_downcasting', True)
+
 
 '''EDA'''
 print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -213,5 +213,6 @@ sns.barplot(
 plt.title("Model Accuracy Ranking")
 plt.xlabel("Accuracy (%)")
 plt.show()
+
 
 
