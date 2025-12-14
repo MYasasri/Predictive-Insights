@@ -9,7 +9,7 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-df=pd.read_csv("https://github.com/MYasasri/Predictive-Insights/blob/main/real_drug_dataset.csv")
+df=pd.read_csv(r"E:\LOVELY PROFFESTIONAL UNIVERSITY\SEM 5\INT234 PREDICTIVE ANALYTICS\Project\real_drug_dataset.csv")
 pd.set_option('future.no_silent_downcasting', True)
 
 '''EDA'''
@@ -49,7 +49,7 @@ df['Good_Improvement'] = df['Improvement_Score'].apply(assign_good_improvement)
 
 x = df[['Age', 'Dosage_mg', 'Treatment_Duration_days',
         'Gender', 'Condition', 'Drug_Name']]
-sns.countplot(x='Good_Improvement', data=df)
+
 y = df['Good_Improvement']
 
 x_train, x_test, y_train, y_test = train_test_split(
@@ -60,16 +60,41 @@ scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
+sns.pairplot(
+    df,
+    vars=['Dosage_mg', 'Treatment_Duration_days', 'Improvement_Score'],
+    hue='Good_Improvement'
+)
+plt.show()
+
+
 print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
 '''KNN''' 
 knn = KNeighborsClassifier(n_neighbors=10)
 knn.fit(x_train, y_train)
 pr1 = knn.predict(x_test)
+c1=confusion_matrix(y_test, pr1)
 a1=accuracy_score(y_test, pr1)*100
-print('Confusion Matrix (KNN):-\n', confusion_matrix(y_test, pr1))
+print('Confusion Matrix (KNN):-\n', c1)
 print("Accuracy (KNN): ", a1)
 print("\nClassification Report (KNN):\n", classification_report(y_test, pr1, zero_division=0))
+
+
+plt.figure(figsize=(6,5))
+sns.heatmap(
+    c1,
+    annot=True,
+    fmt='d',
+    cmap='Blues',
+    cbar=True,
+    xticklabels=['No Improvement', 'Good Improvement'],
+    yticklabels=['No Improvement', 'Good Improvement']
+)
+plt.xlabel("Predicted Label")
+plt.ylabel("Actual Label")
+plt.title("Confusion Matrix – Decision Tree")
+plt.show()
 
 print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
@@ -77,10 +102,26 @@ print("-------------------------------------------------------------------------
 svm_model = SVC(kernel='rbf', probability=True)
 svm_model.fit(x_train, y_train)
 pr2 = svm_model.predict(x_test)
+c2=confusion_matrix(y_test, pr2)
 a2=accuracy_score(y_test, pr2)*100
-print("\nConfusion Matrix (SVM):\n", confusion_matrix(y_test, pr2))
+print("\nConfusion Matrix (SVM):\n", c2)
 print("Accuracy (SVM):", a2)
 print("\nClassification Report (SVM):\n", classification_report(y_test, pr2, zero_division=0))
+
+plt.figure(figsize=(6,5))
+sns.heatmap(
+    c2,
+    annot=True,
+    fmt='d',
+    cmap='Purples',
+    cbar=True,
+    xticklabels=['No Improvement', 'Good Improvement'],
+    yticklabels=['No Improvement', 'Good Improvement']
+)
+plt.xlabel("Predicted Label")
+plt.ylabel("Actual Label")
+plt.title("Confusion Matrix – Decision Tree")
+plt.show()
 
 print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
@@ -88,10 +129,26 @@ print("-------------------------------------------------------------------------
 nb_model = GaussianNB()
 nb_model.fit(x_train, y_train)
 pr3= nb_model.predict(x_test)
+c3 = confusion_matrix(y_test, pr3)
 a3=accuracy_score(y_test, pr3)*100
-print("\nConfusion Matrix (Naive Bayes):\n", confusion_matrix(y_test, pr3))
+print("\nConfusion Matrix (Naive Bayes):\n", c3)
 print("Accuracy (Naive Bayes): ", a3)
 print("\nClassification Report (Naive Bayes):\n", classification_report(y_test, pr3, zero_division=0))
+
+plt.figure(figsize=(6,5))
+sns.heatmap(
+    c3,
+    annot=True,
+    fmt='d',
+    cmap='Greens',
+    cbar=True,
+    xticklabels=['No Improvement', 'Good Improvement'],
+    yticklabels=['No Improvement', 'Good Improvement']
+)
+plt.xlabel("Predicted Label")
+plt.ylabel("Actual Label")
+plt.title("Confusion Matrix – Decision Tree")
+plt.show()
 
 print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
@@ -99,10 +156,27 @@ print("-------------------------------------------------------------------------
 dt = DecisionTreeClassifier(random_state=42)
 dt.fit(x_train, y_train)
 pr4 = dt.predict(x_test)
+c4= confusion_matrix(y_test, pr4)
 a4=accuracy_score(y_test, pr4)*100
-print("\nConfusion Matrix (Decision tree):\n", confusion_matrix(y_test, pr4))
+print("\nConfusion Matrix (Decision tree):\n", c4)
 print("Accuracy (Decision tree):", a4)
 print("\nClassification Report (Decision tree):\n", classification_report(y_test, pr4, zero_division=0))
+
+plt.figure(figsize=(6,5))
+sns.heatmap(
+    c4,
+    annot=True,
+    fmt='d',
+    cmap='Oranges',
+    cbar=True,
+    xticklabels=['No Improvement', 'Good Improvement'],
+    yticklabels=['No Improvement', 'Good Improvement']
+)
+plt.xlabel("Predicted Label")
+plt.ylabel("Actual Label")
+plt.title("Confusion Matrix – Decision Tree")
+plt.show()
+
 
 print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
@@ -117,4 +191,26 @@ best_model = max(model_accuracy, key=model_accuracy.get)
 
 print("Best Fit Model:", best_model," with Accuracy:", model_accuracy[best_model])
 
+models = list(model_accuracy.keys())
+accuracies = list(model_accuracy.values())
+
+accuracy_df = pd.DataFrame({
+    "Model": models,
+    "Accuracy": accuracies
+})
+
+accuracy_df_sorted = accuracy_df.sort_values(by="Accuracy", ascending=False)
+
+sns.barplot(
+    x="Accuracy",
+    y="Model",
+    hue="Model",
+    data=accuracy_df_sorted,
+    palette="magma",
+    legend=False
+)
+
+plt.title("Model Accuracy Ranking")
+plt.xlabel("Accuracy (%)")
+plt.show()
 
